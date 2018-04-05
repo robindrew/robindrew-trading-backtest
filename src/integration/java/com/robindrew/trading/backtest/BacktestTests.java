@@ -8,6 +8,10 @@ import org.slf4j.LoggerFactory;
 
 import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.Instruments;
+import com.robindrew.trading.backtest.BacktestHistoryService;
+import com.robindrew.trading.backtest.BacktestInstrumentPriceStream;
+import com.robindrew.trading.backtest.BacktestStreamingService;
+import com.robindrew.trading.backtest.BacktestTradingPlatform;
 import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceManager;
 import com.robindrew.trading.price.candle.format.pcf.source.file.PcfFileManager;
 import com.robindrew.trading.price.history.IInstrumentPriceHistory;

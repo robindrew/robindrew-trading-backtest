@@ -9,6 +9,7 @@ import org.junit.Test;
 import com.robindrew.common.util.SystemProperties;
 import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.Instruments;
+import com.robindrew.trading.backtest.analysis.volatility.VolatilityAnalysis;
 import com.robindrew.trading.price.candle.format.pcf.source.IPcfSource;
 import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceManager;
 import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceSet;
