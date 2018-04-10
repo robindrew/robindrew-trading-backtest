@@ -17,13 +17,13 @@ import com.robindrew.common.util.Check;
 import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.platform.TradingPlatform;
 import com.robindrew.trading.platform.streaming.IStreamingService;
-import com.robindrew.trading.platform.streaming.latest.IStreamingPrice;
 import com.robindrew.trading.position.IPosition;
 import com.robindrew.trading.position.PositionBuilder;
 import com.robindrew.trading.position.closed.ClosedPosition;
 import com.robindrew.trading.position.closed.IClosedPosition;
 import com.robindrew.trading.position.order.IPositionOrder;
 import com.robindrew.trading.price.candle.IPriceCandle;
+import com.robindrew.trading.price.candle.streaming.IStreamingCandlePrice;
 import com.robindrew.trading.price.history.IHistoryService;
 import com.robindrew.trading.price.precision.IPricePrecision;
 import com.robindrew.trading.trade.funds.AccountFunds;
@@ -93,7 +93,7 @@ public class BacktestTradingPlatform extends TradingPlatform {
 		IPricePrecision precision = getPrecision(instrument);
 
 		BacktestInstrumentPriceStream stream = getPriceStream(instrument);
-		IStreamingPrice price = stream.getPrice();
+		IStreamingCandlePrice price = stream.getPrice();
 
 		IPriceCandle latest = price.getSnapshot().getLatest();
 		BigDecimal closePrice = precision.toBigDecimal(latest.getClosePrice());
@@ -127,7 +127,7 @@ public class BacktestTradingPlatform extends TradingPlatform {
 		IPricePrecision precision = getPrecision(instrument);
 
 		BacktestInstrumentPriceStream stream = getPriceStream(instrument);
-		IStreamingPrice price = stream.getPrice();
+		IStreamingCandlePrice price = stream.getPrice();
 
 		String id = getNextId();
 		IPriceCandle latest = price.getSnapshot().getLatest();
