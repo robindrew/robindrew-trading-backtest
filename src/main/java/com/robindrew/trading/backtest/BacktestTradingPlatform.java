@@ -96,7 +96,7 @@ public class BacktestTradingPlatform extends TradingPlatform {
 		IStreamingCandlePrice price = stream.getPrice();
 
 		IPriceCandle latest = price.getSnapshot().getLatest();
-		BigDecimal closePrice = precision.toBigDecimal(latest.getClosePrice());
+		BigDecimal closePrice = precision.toBigDecimal(latest.getMidClosePrice());
 		IClosedPosition closed = new ClosedPosition(position, latest.getCloseDate(), closePrice);
 		if (closed.isProfit()) {
 			funds.addFunds(new Cash(closed.getProfit(), true));
@@ -131,7 +131,7 @@ public class BacktestTradingPlatform extends TradingPlatform {
 
 		String id = getNextId();
 		IPriceCandle latest = price.getSnapshot().getLatest();
-		BigDecimal openPrice = precision.toBigDecimal(latest.getClosePrice());
+		BigDecimal openPrice = precision.toBigDecimal(latest.getMidClosePrice());
 
 		PositionBuilder builder = new PositionBuilder();
 		builder.setId(id);
