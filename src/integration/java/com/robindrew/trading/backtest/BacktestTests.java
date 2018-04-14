@@ -8,10 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.Instruments;
-import com.robindrew.trading.backtest.BacktestHistoryService;
-import com.robindrew.trading.backtest.BacktestInstrumentPriceStream;
-import com.robindrew.trading.backtest.BacktestStreamingService;
-import com.robindrew.trading.backtest.BacktestTradingPlatform;
 import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceManager;
 import com.robindrew.trading.price.candle.format.pcf.source.file.PcfFileManager;
 import com.robindrew.trading.price.history.IInstrumentPriceHistory;
@@ -30,7 +26,7 @@ public class BacktestTests {
 		BacktestTradingPlatform platform = getPlatform();
 
 		IInstrument instrument = Instruments.GBP_USD;
-		platform.setPrecision(instrument, new PricePrecision(1, 1, 2));
+		platform.getPositionService().setPrecision(instrument, new PricePrecision(1, 1, 2));
 		BacktestInstrumentPriceStream priceStream = (BacktestInstrumentPriceStream) platform.getStreamingService().getPriceStream(instrument);
 		priceStream.register(new SimpleVolatilityStrategy(platform, instrument));
 		priceStream.run();
@@ -45,7 +41,8 @@ public class BacktestTests {
 		BacktestHistoryService history = new BacktestHistoryService(manager);
 
 		BacktestStreamingService streaming = new BacktestStreamingService();
-		BacktestTradingPlatform platform = new BacktestTradingPlatform(funds, history, streaming);
+		BacktestPositionService position = new BacktestPositionService(funds, streaming);
+		BacktestTradingPlatform platform = new BacktestTradingPlatform(history, streaming, position);
 
 		for (IInstrument instrument : history.getInstruments()) {
 			log.info("Registering Instrument: {}", instrument);
