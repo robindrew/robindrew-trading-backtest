@@ -26,7 +26,7 @@ public class BacktestTests {
 		BacktestTradingPlatform platform = getPlatform();
 
 		IInstrument instrument = Instruments.GBP_USD;
-		platform.getPositionService().setPrecision(instrument, new PricePrecision(1, 1, 2));
+		platform.getPositionService().setPrecision(instrument, new PricePrecision(1));
 		BacktestInstrumentPriceStream priceStream = (BacktestInstrumentPriceStream) platform.getStreamingService().getPriceStream(instrument);
 		priceStream.register(new SimpleVolatilityStrategy(platform, instrument));
 		priceStream.run();
