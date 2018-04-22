@@ -18,7 +18,7 @@ import com.robindrew.trading.price.candle.indicator.custom.VolatilityIndicator;
 import com.robindrew.trading.strategy.SingleTradeStrategy;
 import com.robindrew.trading.trade.TradeDirection;
 
-public class SimpleVolatilityStrategy extends SingleTradeStrategy {
+public class SimpleVolatilityStrategy extends SingleTradeStrategy<IBacktestInstrument> {
 
 	private static final Logger log = LoggerFactory.getLogger(SimpleVolatilityStrategy.class);
 
