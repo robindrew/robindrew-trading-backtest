@@ -27,7 +27,7 @@ public class SimpleVolatilityStrategy extends SingleTradeStrategy {
 	private final VolatilityIndicator mediumTerm = new VolatilityIndicator("VOL(15 MIN)", MINUTELY, 15);
 	private final VolatilityIndicator shortTerm = new VolatilityIndicator("VOL(5 MIN)", MINUTELY, 5);
 
-	public SimpleVolatilityStrategy(ITradingPlatform platform, IInstrument instrument) {
+	public SimpleVolatilityStrategy(ITradingPlatform<IBacktestInstrument> platform, IInstrument instrument) {
 		super("SimpleVolatilityStrategy", platform, instrument);
 	}
 
