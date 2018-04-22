@@ -74,7 +74,7 @@ public class BacktestPositionService extends PositionService {
 			throw new IllegalArgumentException("Position does not exist: " + position + " in " + openPositions);
 		}
 
-		IInstrument instrument = position.getInstrument();
+		IBacktestInstrument instrument = (IBacktestInstrument) position.getInstrument();
 		IPricePrecision precision = getPrecision(instrument);
 
 		BacktestInstrumentPriceStream stream = getPriceStream(instrument);
@@ -101,14 +101,14 @@ public class BacktestPositionService extends PositionService {
 		throw new UnsupportedOperationException();
 	}
 
-	protected BacktestInstrumentPriceStream getPriceStream(IInstrument instrument) {
+	protected BacktestInstrumentPriceStream getPriceStream(IBacktestInstrument instrument) {
 		return (BacktestInstrumentPriceStream) streaming.getPriceStream(instrument);
 	}
 
 	@Override
 	public IPosition openPosition(IPositionOrder order) {
 
-		IInstrument instrument = order.getInstrument();
+		IBacktestInstrument instrument = (IBacktestInstrument) order.getInstrument();
 		IPricePrecision precision = getPrecision(instrument);
 
 		BacktestInstrumentPriceStream stream = getPriceStream(instrument);

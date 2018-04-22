@@ -2,22 +2,31 @@ package com.robindrew.trading.backtest;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.robindrew.trading.IInstrument;
-import com.robindrew.trading.platform.streaming.IInstrumentPriceStream;
+import com.robindrew.common.util.Check;
 import com.robindrew.trading.platform.streaming.StreamingService;
+import com.robindrew.trading.price.history.IInstrumentPriceHistory;
 
-public class BacktestStreamingService extends StreamingService {
+public class BacktestStreamingService extends StreamingService<IBacktestInstrument> {
 
 	private final AtomicBoolean connected = new AtomicBoolean(false);
+	private BacktestHistoryService history;
 
-	@Override
-	public void register(IInstrumentPriceStream stream) {
-		super.registerStream(stream);
+	public BacktestStreamingService(BacktestHistoryService history) {
+		this.history = Check.notNull("history", history);
 	}
 
 	@Override
-	public void unregister(IInstrument instrument) {
-		super.unregisterStream(instrument);
+	public boolean subscribe(IBacktestInstrument instrument) {
+		IInstrumentPriceHistory priceHistory = history.getPriceHistory(instrument);
+		BacktestInstrumentPriceStream stream = new BacktestInstrumentPriceStream(instrument, priceHistory);
+		registerStream(stream);
+		return true;
+	}
+
+	@Override
+	public boolean unsubscribe(IBacktestInstrument instrument) {
+		unregisterStream(instrument);
+		return true;
 	}
 
 	@Override

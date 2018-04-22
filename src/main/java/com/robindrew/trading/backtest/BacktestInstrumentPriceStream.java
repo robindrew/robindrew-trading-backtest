@@ -8,14 +8,14 @@ import com.robindrew.trading.price.candle.IPriceCandle;
 import com.robindrew.trading.price.candle.io.stream.source.IPriceCandleStreamSource;
 import com.robindrew.trading.price.history.IInstrumentPriceHistory;
 
-public class BacktestInstrumentPriceStream extends InstrumentPriceStream implements Runnable {
+public class BacktestInstrumentPriceStream extends InstrumentPriceStream<IBacktestInstrument> implements Runnable {
 
 	private static final Logger log = LoggerFactory.getLogger(BacktestInstrumentPriceStream.class);
 
 	private final IInstrumentPriceHistory history;
 
-	public BacktestInstrumentPriceStream(IInstrumentPriceHistory history) {
-		super(history.getInstrument());
+	public BacktestInstrumentPriceStream(IBacktestInstrument instrument, IInstrumentPriceHistory history) {
+		super(instrument);
 		this.history = history;
 	}
 

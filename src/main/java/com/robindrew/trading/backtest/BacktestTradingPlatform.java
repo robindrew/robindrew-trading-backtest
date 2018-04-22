@@ -3,7 +3,7 @@ package com.robindrew.trading.backtest;
 import com.robindrew.common.util.Check;
 import com.robindrew.trading.platform.TradingPlatform;
 
-public class BacktestTradingPlatform extends TradingPlatform {
+public class BacktestTradingPlatform extends TradingPlatform<IBacktestInstrument> {
 
 	private final BacktestHistoryService history;
 	private final BacktestStreamingService streaming;
