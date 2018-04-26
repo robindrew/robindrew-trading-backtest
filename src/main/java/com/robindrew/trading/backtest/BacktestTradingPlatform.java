@@ -21,7 +21,7 @@ public class BacktestTradingPlatform extends TradingPlatform<IBacktestInstrument
 	}
 
 	@Override
-	public BacktestStreamingService getStreamingService() {
+	public IBacktestStreamingService getStreamingService() {
 		return streaming;
 	}
 
