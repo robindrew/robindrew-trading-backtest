@@ -5,11 +5,13 @@ import com.robindrew.trading.platform.TradingPlatform;
 
 public class BacktestTradingPlatform extends TradingPlatform<IBacktestInstrument> {
 
+	private final BacktestAccountService account;
 	private final BacktestHistoryService history;
 	private final BacktestStreamingService streaming;
 	private final BacktestPositionService position;
 
-	public BacktestTradingPlatform(BacktestHistoryService history, BacktestStreamingService streaming, BacktestPositionService position) {
+	public BacktestTradingPlatform(BacktestAccountService account, BacktestHistoryService history, BacktestStreamingService streaming, BacktestPositionService position) {
+		this.account = Check.notNull("account", account);
 		this.history = Check.notNull("history", history);
 		this.streaming = Check.notNull("streaming", streaming);
 		this.position = Check.notNull("position", position);
@@ -28,6 +30,11 @@ public class BacktestTradingPlatform extends TradingPlatform<IBacktestInstrument
 	@Override
 	public BacktestPositionService getPositionService() {
 		return position;
+	}
+
+	@Override
+	public BacktestAccountService getAccountService() {
+		return account;
 	}
 
 }

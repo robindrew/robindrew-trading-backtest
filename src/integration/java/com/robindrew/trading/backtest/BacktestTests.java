@@ -8,8 +8,8 @@ import com.robindrew.trading.Instruments;
 import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceManager;
 import com.robindrew.trading.price.candle.format.pcf.source.file.PcfFileManager;
 import com.robindrew.trading.price.precision.PricePrecision;
-import com.robindrew.trading.trade.funds.AccountFunds;
-import com.robindrew.trading.trade.funds.Cash;
+import com.robindrew.trading.trade.balance.Balance;
+import com.robindrew.trading.trade.cash.Cash;
 
 public class BacktestTests {
 
@@ -29,15 +29,17 @@ public class BacktestTests {
 
 	private BacktestTradingPlatform getPlatform() {
 
-		AccountFunds funds = new AccountFunds(new Cash(10000));
+		String accountId = "12345";
+		Balance balance = new Balance(new Cash(10000));
 		File directory = new File(PCF_DATA_DIR);
 
 		IPcfSourceManager manager = new PcfFileManager(directory);
 		BacktestHistoryService history = new BacktestHistoryService(manager);
 
+		BacktestAccountService account = new BacktestAccountService(accountId, balance);
 		BacktestStreamingService streaming = new BacktestStreamingService(history);
-		BacktestPositionService position = new BacktestPositionService(funds, streaming);
-		BacktestTradingPlatform platform = new BacktestTradingPlatform(history, streaming, position);
+		BacktestPositionService position = new BacktestPositionService(balance, streaming);
+		BacktestTradingPlatform platform = new BacktestTradingPlatform(account, history, streaming, position);
 
 		return platform;
 	}

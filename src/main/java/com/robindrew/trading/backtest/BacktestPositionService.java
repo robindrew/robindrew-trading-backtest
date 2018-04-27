@@ -24,22 +24,22 @@ import com.robindrew.trading.position.order.IPositionOrder;
 import com.robindrew.trading.price.candle.IPriceCandle;
 import com.robindrew.trading.price.candle.streaming.IStreamingCandlePrice;
 import com.robindrew.trading.price.precision.IPricePrecision;
-import com.robindrew.trading.trade.funds.AccountFunds;
-import com.robindrew.trading.trade.funds.Cash;
+import com.robindrew.trading.trade.balance.Balance;
+import com.robindrew.trading.trade.cash.Cash;
 
 public class BacktestPositionService extends PositionService {
 
 	private static final Logger log = LoggerFactory.getLogger(BacktestPositionService.class);
 
-	private final AccountFunds funds;
+	private final Balance balance;
 	private final AtomicLong nextId = new AtomicLong(0);
 	private final Set<IPosition> openPositions = new CopyOnWriteArraySet<>();
 	private final List<IClosedPosition> closedPositions = new CopyOnWriteArrayList<>();
 	private final Map<IInstrument, IPricePrecision> precisionMap = new ConcurrentHashMap<>();
 	private final BacktestStreamingService streaming;
 
-	public BacktestPositionService(AccountFunds funds, BacktestStreamingService streaming) {
-		this.funds = Check.notNull("funds", funds);
+	public BacktestPositionService(Balance balance, BacktestStreamingService streaming) {
+		this.balance = Check.notNull("balance", balance);
 		this.streaming = Check.notNull("streaming", streaming);
 	}
 
@@ -84,21 +84,16 @@ public class BacktestPositionService extends PositionService {
 		BigDecimal closePrice = precision.toBigDecimal(latest.getMidClosePrice());
 		IClosedPosition closed = new ClosedPosition(position, latest.getCloseDate(), closePrice);
 		if (closed.isProfit()) {
-			funds.addFunds(new Cash(closed.getProfit(), true));
+			balance.add(new Cash(closed.getProfit(), true));
 			log.info("Profit: {} ({})", closed.getProfit(), position);
 		} else {
-			funds.subtractFunds(new Cash(closed.getLoss(), true));
+			balance.subtract(new Cash(closed.getLoss(), true));
 			log.info("Loss: {} ({})", closed.getLoss(), position);
 		}
-		log.info("Funds: {}", funds);
+		log.info("Funds: {}", balance);
 
 		closedPositions.add(closed);
 		return closed;
-	}
-
-	@Override
-	public AccountFunds getAvailableFunds() {
-		throw new UnsupportedOperationException();
 	}
 
 	protected BacktestInstrumentPriceStream getPriceStream(IBacktestInstrument instrument) {
