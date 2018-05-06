@@ -1,4 +1,4 @@
-package com.robindrew.trading.backtest;
+package com.robindrew.trading.backtest.platform.history;
 
 import java.util.Set;
 

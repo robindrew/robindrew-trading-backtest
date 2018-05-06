@@ -5,6 +5,12 @@ import java.io.File;
 import org.junit.Test;
 
 import com.robindrew.trading.Instruments;
+import com.robindrew.trading.backtest.platform.BacktestTradingPlatform;
+import com.robindrew.trading.backtest.platform.account.BacktestAccountService;
+import com.robindrew.trading.backtest.platform.history.BacktestHistoryService;
+import com.robindrew.trading.backtest.platform.position.BacktestPositionService;
+import com.robindrew.trading.backtest.platform.streaming.BacktestInstrumentPriceStream;
+import com.robindrew.trading.backtest.platform.streaming.BacktestStreamingService;
 import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceManager;
 import com.robindrew.trading.price.candle.format.pcf.source.file.PcfFileManager;
 import com.robindrew.trading.price.precision.PricePrecision;

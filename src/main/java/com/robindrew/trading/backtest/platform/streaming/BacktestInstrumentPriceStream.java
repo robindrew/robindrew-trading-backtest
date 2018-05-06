@@ -1,8 +1,9 @@
-package com.robindrew.trading.backtest;
+package com.robindrew.trading.backtest.platform.streaming;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.robindrew.trading.backtest.IBacktestInstrument;
 import com.robindrew.trading.platform.streaming.InstrumentPriceStream;
 import com.robindrew.trading.price.candle.IPriceCandle;
 import com.robindrew.trading.price.candle.io.stream.source.IPriceCandleStreamSource;

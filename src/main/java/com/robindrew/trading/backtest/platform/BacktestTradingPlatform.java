@@ -1,6 +1,12 @@
-package com.robindrew.trading.backtest;
+package com.robindrew.trading.backtest.platform;
 
 import com.robindrew.common.util.Check;
+import com.robindrew.trading.backtest.IBacktestInstrument;
+import com.robindrew.trading.backtest.platform.account.BacktestAccountService;
+import com.robindrew.trading.backtest.platform.history.BacktestHistoryService;
+import com.robindrew.trading.backtest.platform.position.BacktestPositionService;
+import com.robindrew.trading.backtest.platform.streaming.BacktestStreamingService;
+import com.robindrew.trading.backtest.platform.streaming.IBacktestStreamingService;
 import com.robindrew.trading.platform.TradingPlatform;
 
 public class BacktestTradingPlatform extends TradingPlatform<IBacktestInstrument> {
