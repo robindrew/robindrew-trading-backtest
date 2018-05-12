@@ -9,16 +9,15 @@ import org.junit.Test;
 import com.robindrew.common.util.SystemProperties;
 import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.Instruments;
-import com.robindrew.trading.backtest.analysis.volatility.VolatilityAnalysis;
 import com.robindrew.trading.price.candle.format.pcf.source.IPcfSource;
-import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceManager;
+import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceProviderManager;
 import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceSet;
-import com.robindrew.trading.price.candle.format.pcf.source.file.PcfFileManager;
+import com.robindrew.trading.price.candle.format.pcf.source.file.PcfFileProviderManager;
 import com.robindrew.trading.price.candle.io.stream.PriceCandleStreamPipe;
 import com.robindrew.trading.price.candle.io.stream.source.IPriceCandleStreamSource;
 import com.robindrew.trading.price.candle.io.stream.source.PriceCandleLoggedStreamSource;
 import com.robindrew.trading.price.candle.io.stream.source.PriceCandleStreamSourceBuilder;
-import com.robindrew.trading.provider.TradeDataProvider;
+import com.robindrew.trading.provider.TradingProvider;
 
 public class VolatilityAnalysisTest {
 
@@ -26,10 +25,10 @@ public class VolatilityAnalysisTest {
 	public void testFromPcfFiles() {
 
 		File directory = new File(SystemProperties.get("directory", false));
-		TradeDataProvider provider = TradeDataProvider.valueOf(SystemProperties.get("provider", false));
+		TradingProvider provider = TradingProvider.valueOf(SystemProperties.get("provider", false));
 		IInstrument instrument = Instruments.valueOf(SystemProperties.get("instrument", false));
 
-		IPcfSourceManager manager = new PcfFileManager(directory, provider);
+		IPcfSourceProviderManager manager = new PcfFileProviderManager(directory, provider);
 		try (VolatilityAnalysis analysis = new VolatilityAnalysis(instrument)) {
 
 			IPcfSourceSet sourceSet = manager.getSourceSet(instrument);

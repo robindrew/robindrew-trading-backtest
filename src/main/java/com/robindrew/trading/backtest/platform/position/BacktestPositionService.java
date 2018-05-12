@@ -18,7 +18,7 @@ import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.backtest.IBacktestInstrument;
 import com.robindrew.trading.backtest.platform.streaming.BacktestInstrumentPriceStream;
 import com.robindrew.trading.backtest.platform.streaming.BacktestStreamingService;
-import com.robindrew.trading.platform.positions.PositionService;
+import com.robindrew.trading.platform.positions.AbstractPositionService;
 import com.robindrew.trading.position.IPosition;
 import com.robindrew.trading.position.PositionBuilder;
 import com.robindrew.trading.position.closed.ClosedPosition;
@@ -27,10 +27,11 @@ import com.robindrew.trading.position.order.IPositionOrder;
 import com.robindrew.trading.price.candle.IPriceCandle;
 import com.robindrew.trading.price.candle.streaming.IStreamingCandlePrice;
 import com.robindrew.trading.price.precision.IPricePrecision;
+import com.robindrew.trading.provider.ITradingProvider;
 import com.robindrew.trading.trade.balance.Balance;
 import com.robindrew.trading.trade.cash.Cash;
 
-public class BacktestPositionService extends PositionService {
+public class BacktestPositionService extends AbstractPositionService {
 
 	private static final Logger log = LoggerFactory.getLogger(BacktestPositionService.class);
 
@@ -41,7 +42,8 @@ public class BacktestPositionService extends PositionService {
 	private final Map<IInstrument, IPricePrecision> precisionMap = new ConcurrentHashMap<>();
 	private final BacktestStreamingService streaming;
 
-	public BacktestPositionService(Balance balance, BacktestStreamingService streaming) {
+	public BacktestPositionService(ITradingProvider provider, Balance balance, BacktestStreamingService streaming) {
+		super(provider);
 		this.balance = Check.notNull("balance", balance);
 		this.streaming = Check.notNull("streaming", streaming);
 	}

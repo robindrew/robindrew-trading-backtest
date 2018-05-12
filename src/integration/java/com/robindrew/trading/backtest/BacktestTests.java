@@ -11,9 +11,11 @@ import com.robindrew.trading.backtest.platform.history.BacktestHistoryService;
 import com.robindrew.trading.backtest.platform.position.BacktestPositionService;
 import com.robindrew.trading.backtest.platform.streaming.BacktestInstrumentPriceStream;
 import com.robindrew.trading.backtest.platform.streaming.BacktestStreamingService;
-import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceManager;
-import com.robindrew.trading.price.candle.format.pcf.source.file.PcfFileManager;
+import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceProviderManager;
+import com.robindrew.trading.price.candle.format.pcf.source.file.PcfFileProviderManager;
 import com.robindrew.trading.price.precision.PricePrecision;
+import com.robindrew.trading.provider.ITradingProvider;
+import com.robindrew.trading.provider.TradingProvider;
 import com.robindrew.trading.trade.balance.Balance;
 import com.robindrew.trading.trade.cash.Cash;
 
@@ -38,13 +40,14 @@ public class BacktestTests {
 		String accountId = "12345";
 		Balance balance = new Balance(new Cash(10000));
 		File directory = new File(PCF_DATA_DIR);
+		ITradingProvider provider = TradingProvider.HISTDATA;
 
-		IPcfSourceManager manager = new PcfFileManager(directory);
+		IPcfSourceProviderManager manager = new PcfFileProviderManager(directory, provider);
 		BacktestHistoryService history = new BacktestHistoryService(manager);
 
-		BacktestAccountService account = new BacktestAccountService(accountId, balance);
+		BacktestAccountService account = new BacktestAccountService(provider, accountId, balance);
 		BacktestStreamingService streaming = new BacktestStreamingService(history);
-		BacktestPositionService position = new BacktestPositionService(balance, streaming);
+		BacktestPositionService position = new BacktestPositionService(provider, balance, streaming);
 		BacktestTradingPlatform platform = new BacktestTradingPlatform(account, history, streaming, position);
 
 		return platform;

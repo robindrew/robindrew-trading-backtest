@@ -3,17 +3,18 @@ package com.robindrew.trading.backtest.platform.history;
 import java.util.Set;
 
 import com.robindrew.trading.IInstrument;
-import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceManager;
+import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceProviderManager;
 import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceSet;
 import com.robindrew.trading.price.candle.format.pcf.source.PcfHistoryPriceSource;
-import com.robindrew.trading.price.history.IHistoryService;
+import com.robindrew.trading.price.history.AbstractHistoryService;
 import com.robindrew.trading.price.history.IInstrumentPriceHistory;
 
-public class BacktestHistoryService implements IHistoryService {
+public class BacktestHistoryService extends AbstractHistoryService {
 
-	private final IPcfSourceManager manager;
+	private final IPcfSourceProviderManager manager;
 
-	public BacktestHistoryService(IPcfSourceManager manager) {
+	public BacktestHistoryService(IPcfSourceProviderManager manager) {
+		super(manager.getProvider());
 		this.manager = manager;
 	}
 
