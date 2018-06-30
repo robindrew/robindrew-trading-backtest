@@ -2,9 +2,7 @@ package com.robindrew.trading.backtest.platform.position;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicLong;
@@ -14,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
 import com.robindrew.common.util.Check;
-import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.backtest.IBacktestInstrument;
 import com.robindrew.trading.backtest.platform.streaming.BacktestInstrumentPriceStream;
 import com.robindrew.trading.backtest.platform.streaming.BacktestStreamingService;
@@ -26,46 +23,31 @@ import com.robindrew.trading.position.closed.IClosedPosition;
 import com.robindrew.trading.position.order.IPositionOrder;
 import com.robindrew.trading.price.candle.IPriceCandle;
 import com.robindrew.trading.price.candle.streaming.IStreamingCandlePrice;
+import com.robindrew.trading.price.decimal.IDecimal;
 import com.robindrew.trading.price.precision.IPricePrecision;
 import com.robindrew.trading.provider.ITradingProvider;
-import com.robindrew.trading.trade.balance.Balance;
-import com.robindrew.trading.trade.cash.Cash;
+import com.robindrew.trading.trade.balance.IMoney;
 
 public class BacktestPositionService extends AbstractPositionService {
 
 	private static final Logger log = LoggerFactory.getLogger(BacktestPositionService.class);
 
-	private final Balance balance;
+	private final IMoney balance;
 	private final AtomicLong nextId = new AtomicLong(0);
 	private final Set<IPosition> openPositions = new CopyOnWriteArraySet<>();
 	private final List<IClosedPosition> closedPositions = new CopyOnWriteArrayList<>();
-	private final Map<IInstrument, IPricePrecision> precisionMap = new ConcurrentHashMap<>();
 	private final BacktestStreamingService streaming;
+	private final IDecimal spread;
 
-	public BacktestPositionService(ITradingProvider provider, Balance balance, BacktestStreamingService streaming) {
+	public BacktestPositionService(ITradingProvider provider, IMoney balance, BacktestStreamingService streaming, IDecimal spread) {
 		super(provider);
 		this.balance = Check.notNull("balance", balance);
 		this.streaming = Check.notNull("streaming", streaming);
+		this.spread = Check.notNull("spread", spread);
 	}
 
 	protected String getNextId() {
 		return "POS#" + nextId.incrementAndGet();
-	}
-
-	@Override
-	public IPricePrecision getPrecision(IInstrument instrument) {
-		Check.notNull("instrument", instrument);
-		IPricePrecision precision = precisionMap.get(instrument);
-		if (precision == null) {
-			throw new IllegalArgumentException("precision not configured for instrument: " + instrument);
-		}
-		return precision;
-	}
-
-	public void setPrecision(IInstrument instrument, IPricePrecision precision) {
-		Check.notNull("instrument", instrument);
-		Check.notNull("precision", precision);
-		precisionMap.put(instrument, precision);
 	}
 
 	@Override
@@ -80,7 +62,7 @@ public class BacktestPositionService extends AbstractPositionService {
 		}
 
 		IBacktestInstrument instrument = (IBacktestInstrument) position.getInstrument();
-		IPricePrecision precision = getPrecision(instrument);
+		IPricePrecision precision = instrument.getPrecision();
 
 		BacktestInstrumentPriceStream stream = getPriceStream(instrument);
 		IStreamingCandlePrice price = stream.getPrice();
@@ -89,10 +71,10 @@ public class BacktestPositionService extends AbstractPositionService {
 		BigDecimal closePrice = precision.toBigDecimal(latest.getMidClosePrice());
 		IClosedPosition closed = new ClosedPosition(position, latest.getCloseDate(), closePrice);
 		if (closed.isProfit()) {
-			balance.add(new Cash(closed.getProfit(), true));
+			balance.add(closed.getProfit());
 			log.info("Profit: {} ({})", closed.getProfit(), position);
 		} else {
-			balance.subtract(new Cash(closed.getLoss(), true));
+			balance.subtract(closed.getLoss());
 			log.info("Loss: {} ({})", closed.getLoss(), position);
 		}
 		log.info("Funds: {}", balance);
@@ -109,7 +91,7 @@ public class BacktestPositionService extends AbstractPositionService {
 	public IPosition openPosition(IPositionOrder order) {
 
 		IBacktestInstrument instrument = (IBacktestInstrument) order.getInstrument();
-		IPricePrecision precision = getPrecision(instrument);
+		IPricePrecision precision = instrument.getPrecision();
 
 		BacktestInstrumentPriceStream stream = getPriceStream(instrument);
 		IStreamingCandlePrice price = stream.getPrice();

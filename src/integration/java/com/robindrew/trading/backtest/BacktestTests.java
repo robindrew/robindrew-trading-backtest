@@ -8,7 +8,8 @@ import com.robindrew.trading.Instruments;
 import com.robindrew.trading.backtest.context.BacktestContext;
 import com.robindrew.trading.backtest.context.BacktestContextBuilder;
 import com.robindrew.trading.backtest.platform.BacktestTradingPlatform;
-import com.robindrew.trading.backtest.platform.streaming.BacktestInstrumentPriceStream;
+import com.robindrew.trading.backtest.platform.streaming.IBacktestInstrumentPriceStream;
+import com.robindrew.trading.backtest.platform.streaming.IBacktestStreamingService;
 import com.robindrew.trading.price.precision.PricePrecision;
 import com.robindrew.trading.provider.TradingProvider;
 
@@ -17,20 +18,21 @@ public class BacktestTests {
 	@Test
 	public void simpleTest() {
 
-		String rootDirectory = getProperty("root.dir");
+		String dataDirectory = getProperty("data.dir");
 		TradingProvider provider = TradingProvider.valueOf(getProperty("provider"));
-
+		IBacktestInstrument instrument = new BacktestInstrument(Instruments.GBP_USD, new PricePrecision(1));
+		
 		BacktestContextBuilder builder = new BacktestContextBuilder();
-		builder.setRootDirectory(rootDirectory);
+		builder.setDataDirectory(dataDirectory);
 		builder.setProvider(provider);
-		builder.setInstrument(Instruments.GBP_USD);
+		builder.setInstrument(instrument);
 		BacktestContext context = builder.build();
 
 		BacktestTradingPlatform platform = context.getPlatform();
 
-		IBacktestInstrument instrument = new BacktestInstrument(Instruments.GBP_USD);
-		platform.getPositionService().setPrecision(instrument, new PricePrecision(1));
-		BacktestInstrumentPriceStream priceStream = (BacktestInstrumentPriceStream) platform.getStreamingService().getPriceStream(instrument);
+
+		IBacktestStreamingService streaming = platform.getStreamingService();
+		IBacktestInstrumentPriceStream priceStream = streaming.getPriceStream(instrument);
 		priceStream.register(new SimpleVolatilityStrategy(platform, instrument));
 		priceStream.run();
 	}

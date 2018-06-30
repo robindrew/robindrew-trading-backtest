@@ -9,7 +9,7 @@ import com.robindrew.trading.price.candle.IPriceCandle;
 import com.robindrew.trading.price.candle.io.stream.source.IPriceCandleStreamSource;
 import com.robindrew.trading.price.history.IInstrumentPriceHistory;
 
-public class BacktestInstrumentPriceStream extends InstrumentPriceStream<IBacktestInstrument> implements Runnable {
+public class BacktestInstrumentPriceStream extends InstrumentPriceStream<IBacktestInstrument> implements IBacktestInstrumentPriceStream {
 
 	private static final Logger log = LoggerFactory.getLogger(BacktestInstrumentPriceStream.class);
 

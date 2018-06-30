@@ -5,4 +5,7 @@ import com.robindrew.trading.platform.streaming.IStreamingService;
 
 public interface IBacktestStreamingService extends IStreamingService<IBacktestInstrument> {
 
+	@Override
+	IBacktestInstrumentPriceStream getPriceStream(IBacktestInstrument instrument);
+
 }

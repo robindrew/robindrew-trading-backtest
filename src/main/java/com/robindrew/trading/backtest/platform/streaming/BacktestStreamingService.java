@@ -28,4 +28,10 @@ public class BacktestStreamingService extends AbstractStreamingService<IBacktest
 		unregisterStream(instrument);
 		return true;
 	}
+
+	@Override
+	public IBacktestInstrumentPriceStream getPriceStream(IBacktestInstrument instrument) {
+		return (IBacktestInstrumentPriceStream) super.getPriceStream(instrument);
+	}
+
 }
