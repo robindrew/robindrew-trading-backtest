@@ -3,7 +3,7 @@ package com.robindrew.trading.backtest.platform.account;
 import com.robindrew.common.util.Check;
 import com.robindrew.trading.platform.account.AbstractAccountService;
 import com.robindrew.trading.provider.ITradingProvider;
-import com.robindrew.trading.trade.balance.IMoney;
+import com.robindrew.trading.trade.money.IMoney;
 
 public class BacktestAccountService extends AbstractAccountService {
 

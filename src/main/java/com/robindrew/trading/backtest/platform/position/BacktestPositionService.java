@@ -26,7 +26,7 @@ import com.robindrew.trading.price.candle.streaming.IStreamingCandlePrice;
 import com.robindrew.trading.price.decimal.IDecimal;
 import com.robindrew.trading.price.precision.IPricePrecision;
 import com.robindrew.trading.provider.ITradingProvider;
-import com.robindrew.trading.trade.balance.IMoney;
+import com.robindrew.trading.trade.money.IMoney;
 
 public class BacktestPositionService extends AbstractPositionService {
 

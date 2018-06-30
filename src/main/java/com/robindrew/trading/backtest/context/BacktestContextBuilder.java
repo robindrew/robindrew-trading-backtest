@@ -18,8 +18,8 @@ import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceSet;
 import com.robindrew.trading.price.candle.format.pcf.source.file.PcfFileManager;
 import com.robindrew.trading.price.decimal.IDecimal;
 import com.robindrew.trading.provider.ITradingProvider;
-import com.robindrew.trading.trade.balance.IMoney;
-import com.robindrew.trading.trade.balance.Money;
+import com.robindrew.trading.trade.money.IMoney;
+import com.robindrew.trading.trade.money.Money;
 
 public class BacktestContextBuilder {
 
