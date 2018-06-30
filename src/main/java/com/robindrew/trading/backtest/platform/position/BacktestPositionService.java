@@ -50,6 +50,10 @@ public class BacktestPositionService extends AbstractPositionService {
 		return "POS#" + nextId.incrementAndGet();
 	}
 
+	public IDecimal getSpread() {
+		return spread;
+	}
+
 	@Override
 	public List<IPosition> getAllPositions() {
 		return ImmutableList.copyOf(openPositions);
