@@ -64,6 +64,9 @@ public class BacktestContextBuilder {
 		if (instrument == null) {
 			throw new IllegalStateException("instrument not set");
 		}
+		if (spread == null) {
+			throw new IllegalStateException("spread not set");
+		}
 
 		PcfFileManager manager = new PcfFileManager(dataDirectory);
 		IPcfSourceProviderManager providerManager = manager.getProvider(provider);

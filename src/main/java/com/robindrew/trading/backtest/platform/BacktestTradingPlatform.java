@@ -9,7 +9,7 @@ import com.robindrew.trading.backtest.platform.streaming.BacktestStreamingServic
 import com.robindrew.trading.backtest.platform.streaming.IBacktestStreamingService;
 import com.robindrew.trading.platform.TradingPlatform;
 
-public class BacktestTradingPlatform extends TradingPlatform<IBacktestInstrument> {
+public class BacktestTradingPlatform extends TradingPlatform<IBacktestInstrument> implements IBacktestTradingPlatform {
 
 	private final BacktestAccountService account;
 	private final BacktestHistoryService history;

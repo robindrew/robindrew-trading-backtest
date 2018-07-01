@@ -8,6 +8,7 @@ import com.robindrew.trading.Instruments;
 import com.robindrew.trading.backtest.context.BacktestContext;
 import com.robindrew.trading.backtest.context.BacktestContextBuilder;
 import com.robindrew.trading.backtest.platform.BacktestTradingPlatform;
+import com.robindrew.trading.backtest.platform.IBacktestTradingPlatform;
 import com.robindrew.trading.backtest.platform.streaming.IBacktestInstrumentPriceStream;
 import com.robindrew.trading.backtest.platform.streaming.IBacktestStreamingService;
 import com.robindrew.trading.price.precision.PricePrecision;
@@ -28,9 +29,7 @@ public class BacktestTests {
 		builder.setInstrument(instrument);
 		BacktestContext context = builder.build();
 
-		BacktestTradingPlatform platform = context.getPlatform();
-
-
+		IBacktestTradingPlatform platform = context.getPlatform();
 		IBacktestStreamingService streaming = platform.getStreamingService();
 		IBacktestInstrumentPriceStream priceStream = streaming.getPriceStream(instrument);
 		priceStream.register(new SimpleVolatilityStrategy(platform, instrument));
