@@ -15,7 +15,7 @@ import com.robindrew.trading.backtest.platform.position.BacktestPositionService;
 import com.robindrew.trading.backtest.platform.streaming.BacktestStreamingService;
 import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceProviderManager;
 import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceSet;
-import com.robindrew.trading.price.candle.format.pcf.source.file.PcfFileManager;
+import com.robindrew.trading.price.candle.format.pcf.source.file.PcfFileProviderLocator;
 import com.robindrew.trading.price.decimal.IDecimal;
 import com.robindrew.trading.provider.ITradingProvider;
 import com.robindrew.trading.trade.money.IMoney;
@@ -68,7 +68,7 @@ public class BacktestContextBuilder {
 			throw new IllegalStateException("spread not set");
 		}
 
-		PcfFileManager manager = new PcfFileManager(dataDirectory);
+		PcfFileProviderLocator manager = new PcfFileProviderLocator(dataDirectory);
 		IPcfSourceProviderManager providerManager = manager.getProvider(provider);
 		IPcfSourceSet sourceSet = providerManager.getSourceSet(instrument);
 		BacktestHistoryService history = new BacktestHistoryService(providerManager);
