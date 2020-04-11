@@ -14,11 +14,9 @@ import com.robindrew.trading.backtest.IBacktestInstrument;
 import com.robindrew.trading.backtest.platform.history.BacktestHistoryService;
 import com.robindrew.trading.backtest.platform.streaming.BacktestStreamingService;
 import com.robindrew.trading.backtest.platform.streaming.IBacktestInstrumentPriceStream;
-import com.robindrew.trading.price.candle.IPriceCandle;
 import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceProviderLocator;
 import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceProviderManager;
 import com.robindrew.trading.price.candle.format.pcf.source.file.PcfFileProviderLocator;
-import com.robindrew.trading.price.candle.io.stream.sink.IPriceCandleStreamSink;
 import com.robindrew.trading.provider.ITradingProvider;
 import com.robindrew.trading.provider.TradingProvider;
 
