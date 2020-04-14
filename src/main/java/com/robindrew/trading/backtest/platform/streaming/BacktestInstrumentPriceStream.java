@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.robindrew.trading.backtest.IBacktestInstrument;
 import com.robindrew.trading.platform.streaming.InstrumentPriceStream;
 import com.robindrew.trading.price.candle.IPriceCandle;
+import com.robindrew.trading.price.candle.PriceCandles;
 import com.robindrew.trading.price.candle.io.stream.source.IPriceCandleStreamSource;
 import com.robindrew.trading.price.history.IInstrumentPriceHistory;
 
@@ -23,6 +24,10 @@ public class BacktestInstrumentPriceStream extends InstrumentPriceStream<IBackte
 	@Override
 	public void run() {
 		IPriceCandleStreamSource source = history.getStreamSource();
+		
+		// Perform basic sanity check - candles are published in chronological order
+		source = PriceCandles.checkSorted(source);
+
 		log.info("[Started Streaming Prices] {}", getInstrument());
 		while (true) {
 			IPriceCandle candle = source.getNextCandle();
@@ -36,7 +41,7 @@ public class BacktestInstrumentPriceStream extends InstrumentPriceStream<IBackte
 
 	@Override
 	public String getName() {
-		return "BacktestInstrumentPriceStreamListener[" + getInstrument() + "]";
+		return "BacktestInstrumentPriceStream[" + getInstrument() + "]";
 	}
 
 	@Override
