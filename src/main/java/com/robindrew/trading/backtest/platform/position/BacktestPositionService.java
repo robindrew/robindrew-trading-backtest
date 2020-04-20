@@ -114,11 +114,11 @@ public class BacktestPositionService extends AbstractPositionService {
 		builder.setOpenPrice(openPrice);
 		builder.setTradeSize(order.getTradeSize());
 		if (order.getDirection().isBuy()) {
-			builder.setProfitLimitPrice(openPrice.add(new BigDecimal(order.getProfitLimitDistance())));
-			builder.setStopLossPrice(openPrice.subtract(new BigDecimal(order.getStopLossDistance())));
+			builder.setProfitLimitPrice(openPrice.add(order.getProfitLimitDistance()));
+			builder.setStopLossPrice(openPrice.subtract(order.getStopLossDistance()));
 		} else {
-			builder.setProfitLimitPrice(openPrice.subtract(new BigDecimal(order.getProfitLimitDistance())));
-			builder.setStopLossPrice(openPrice.add(new BigDecimal(order.getStopLossDistance())));
+			builder.setProfitLimitPrice(openPrice.subtract(order.getProfitLimitDistance()));
+			builder.setStopLossPrice(openPrice.add(order.getStopLossDistance()));
 		}
 		IPosition position = builder.build();
 
