@@ -18,8 +18,7 @@ import com.robindrew.trading.price.candle.format.pcf.source.IPcfSourceSet;
 import com.robindrew.trading.price.candle.format.pcf.source.file.PcfFileProviderLocator;
 import com.robindrew.trading.price.decimal.IDecimal;
 import com.robindrew.trading.provider.ITradingProvider;
-import com.robindrew.trading.trade.money.IMoney;
-import com.robindrew.trading.trade.money.Money;
+import com.robindrew.trading.trade.currency.Currency;
 
 public class BacktestContextBuilder {
 
@@ -27,7 +26,7 @@ public class BacktestContextBuilder {
 	private ITradingProvider provider;
 	private IInstrument instrument;
 	private String accountId = "BacktestAccount001";
-	private IMoney balance = new Money(10000, GBP);
+	private Currency balance = new Currency(GBP, 10000);
 	private IDecimal spread;
 
 	public BacktestContextBuilder setDataDirectory(File directory) {

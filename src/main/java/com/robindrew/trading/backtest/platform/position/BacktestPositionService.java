@@ -1,5 +1,7 @@
 package com.robindrew.trading.backtest.platform.position;
 
+import static com.robindrew.common.util.Check.notNull;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
@@ -11,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
-import com.robindrew.common.util.Check;
 import com.robindrew.trading.backtest.IBacktestInstrument;
 import com.robindrew.trading.backtest.platform.streaming.BacktestInstrumentPriceStream;
 import com.robindrew.trading.backtest.platform.streaming.BacktestStreamingService;
@@ -26,24 +27,24 @@ import com.robindrew.trading.price.candle.streaming.IStreamingCandlePrice;
 import com.robindrew.trading.price.decimal.IDecimal;
 import com.robindrew.trading.price.precision.IPricePrecision;
 import com.robindrew.trading.provider.ITradingProvider;
-import com.robindrew.trading.trade.money.IMoney;
+import com.robindrew.trading.trade.currency.Currency;
 
 public class BacktestPositionService extends AbstractPositionService {
 
 	private static final Logger log = LoggerFactory.getLogger(BacktestPositionService.class);
 
-	private final IMoney balance;
+	private volatile Currency balance;
 	private final AtomicLong nextId = new AtomicLong(0);
 	private final Set<IPosition> openPositions = new CopyOnWriteArraySet<>();
 	private final List<IClosedPosition> closedPositions = new CopyOnWriteArrayList<>();
 	private final BacktestStreamingService streaming;
 	private final IDecimal spread;
 
-	public BacktestPositionService(ITradingProvider provider, IMoney balance, BacktestStreamingService streaming, IDecimal spread) {
+	public BacktestPositionService(ITradingProvider provider, Currency balance, BacktestStreamingService streaming, IDecimal spread) {
 		super(provider);
-		this.balance = Check.notNull("balance", balance);
-		this.streaming = Check.notNull("streaming", streaming);
-		this.spread = Check.notNull("spread", spread);
+		this.balance = notNull("balance", balance);
+		this.streaming = notNull("streaming", streaming);
+		this.spread = notNull("spread", spread);
 	}
 
 	protected String getNextId() {
@@ -75,10 +76,10 @@ public class BacktestPositionService extends AbstractPositionService {
 		BigDecimal closePrice = precision.toBigDecimal(latest.getMidClosePrice());
 		IClosedPosition closed = new ClosedPosition(position, latest.getCloseDate(), closePrice);
 		if (closed.isProfit()) {
-			balance.add(closed.getProfit());
+			balance = balance.add(closed.getProfit());
 			log.info("Profit: {} ({})", closed.getProfit(), position);
 		} else {
-			balance.subtract(closed.getLoss());
+			balance = balance.subtract(closed.getLoss());
 			log.info("Loss: {} ({})", closed.getLoss(), position);
 		}
 		log.info("Funds: {}", balance);
