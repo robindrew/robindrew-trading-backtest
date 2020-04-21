@@ -106,19 +106,19 @@ public class BacktestPositionService extends AbstractPositionService {
 		BigDecimal openPrice = precision.toBigDecimal(latest.getMidClosePrice());
 
 		PositionBuilder builder = new PositionBuilder();
-		builder.setId(id);
-		builder.setInstrument(order.getInstrument());
-		builder.setDirection(order.getDirection());
-		builder.setOpenDate(latest.getCloseDate());
-		builder.setCurrency(order.getTradeCurrency());
-		builder.setOpenPrice(openPrice);
-		builder.setTradeSize(order.getTradeSize());
+		builder.id(id);
+		builder.instrument(order.getInstrument());
+		builder.direction(order.getDirection());
+		builder.openDate(latest.getCloseDate());
+		builder.currency(order.getTradeCurrency());
+		builder.openPrice(openPrice);
+		builder.tradeSize(order.getTradeSize());
 		if (order.getDirection().isBuy()) {
-			builder.setProfitLimitPrice(openPrice.add(order.getProfitLimitDistance()));
-			builder.setStopLossPrice(openPrice.subtract(order.getStopLossDistance()));
+			builder.profitLimitPrice(openPrice.add(order.getProfitLimitDistance()));
+			builder.stopLossPrice(openPrice.subtract(order.getStopLossDistance()));
 		} else {
-			builder.setProfitLimitPrice(openPrice.subtract(order.getProfitLimitDistance()));
-			builder.setStopLossPrice(openPrice.add(order.getStopLossDistance()));
+			builder.profitLimitPrice(openPrice.subtract(order.getProfitLimitDistance()));
+			builder.stopLossPrice(openPrice.add(order.getStopLossDistance()));
 		}
 		IPosition position = builder.build();
 
