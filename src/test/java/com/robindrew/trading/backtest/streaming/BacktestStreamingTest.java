@@ -41,7 +41,7 @@ public class BacktestStreamingTest {
 
 			// Subscribe
 			IBacktestInstrument backtestInstrument = BacktestInstrument.of(instrument, withDecimalPlaces(4));
-			Assert.assertTrue(streaming.subscribe(backtestInstrument));
+			Assert.assertTrue(streaming.subscribeToPrices(backtestInstrument));
 
 			// Get the stream
 			IBacktestInstrumentPriceStream stream = streaming.getPriceStream(backtestInstrument);

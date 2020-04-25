@@ -16,7 +16,7 @@ public class BacktestStreamingService extends AbstractStreamingService<IBacktest
 	}
 
 	@Override
-	public boolean subscribe(IBacktestInstrument instrument) {
+	public boolean subscribeToPrices(IBacktestInstrument instrument) {
 		IInstrumentPriceHistory priceHistory = history.getPriceHistory(instrument);
 		BacktestInstrumentPriceStream stream = new BacktestInstrumentPriceStream(instrument, priceHistory);
 		registerStream(stream);
@@ -24,7 +24,7 @@ public class BacktestStreamingService extends AbstractStreamingService<IBacktest
 	}
 
 	@Override
-	public boolean unsubscribe(IBacktestInstrument instrument) {
+	public boolean unsubscribeFromPrices(IBacktestInstrument instrument) {
 		unregisterStream(instrument);
 		return true;
 	}
