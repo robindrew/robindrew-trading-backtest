@@ -1,13 +1,15 @@
 package com.robindrew.trading.backtest;
 
-import com.robindrew.common.util.Check;
 import com.robindrew.trading.IInstrument;
-import com.robindrew.trading.Instrument;
 import com.robindrew.trading.price.precision.IPricePrecision;
+import com.robindrew.trading.provider.ITradingProvider;
+import com.robindrew.trading.provider.ITradingInstrument;
+import com.robindrew.trading.provider.TradingProvider;
+import com.robindrew.trading.provider.TradingInstrument;
 
-public class BacktestInstrument extends Instrument implements IBacktestInstrument {
+public class BacktestInstrument extends TradingInstrument implements IBacktestInstrument {
 
-	public static BacktestInstrument of(IInstrument instrument) {
+	public static BacktestInstrument of(ITradingInstrument instrument) {
 		return new BacktestInstrument(instrument, instrument.getPrecision());
 	}
 
@@ -15,17 +17,12 @@ public class BacktestInstrument extends Instrument implements IBacktestInstrumen
 		return new BacktestInstrument(instrument, precision);
 	}
 
-	private final IPricePrecision precision;
-
 	private BacktestInstrument(IInstrument underlying, IPricePrecision precision) {
-		super(underlying.getName(), underlying);
-		this.precision = Check.notNull("precision", precision);
+		super(underlying.getName(), underlying, precision);
 	}
 
-
-	@Override
-	public IPricePrecision getPrecision() {
-		return precision;
+	public ITradingProvider getProvider() {
+		return TradingProvider.BACKTEST;
 	}
 
 }

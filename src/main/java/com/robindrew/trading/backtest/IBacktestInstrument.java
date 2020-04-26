@@ -1,7 +1,7 @@
 package com.robindrew.trading.backtest;
 
-import com.robindrew.trading.IInstrument;
+import com.robindrew.trading.provider.ITradingInstrument;
 
-public interface IBacktestInstrument extends IInstrument {
+public interface IBacktestInstrument extends ITradingInstrument {
 
 }
